@@ -53,6 +53,9 @@ A aplicação estará disponível em [http://localhost:3000](http://localhost:30
 - **PUT /users/:uuid:** Atualiza as informações do usuário com o UUID especificado.
 - **DELETE /users/:uuid:** Exclui o usuário com o UUID especificado.
 
+- **POST /token** Utilizado para autenticação, ou seja obtenção do token
+- **POST /token/validate** Utilizado para validar o token
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues para reportar problemas, sugestões ou melhorias. Se preferir, faça um fork do projeto, implemente as mudanças e envie um pull request.
