@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import DatabaseError from "../errors/database.error.model";
+import { DatabaseError } from "../errors/database.error.model";
 
 function errorHandler(error : any, req : Request, res : Response, next : NextFunction){
     

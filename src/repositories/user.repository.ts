@@ -1,6 +1,6 @@
-import db from "../db";
-import User from "../models/user.model";
-import DatabaseError from "../errors/database.error.model";
+import db from "../database";
+import { User } from "../models/user.model";
+import { DatabaseError } from "../errors/database.error.model";
 
 class UserRepository {
   async findAllUsers(): Promise<User[]> {
@@ -22,7 +22,7 @@ class UserRepository {
 
       return user;
     } catch (error) {
-      throw new DatabaseError('Erro na consulta por ID, ', error);
+      throw new DatabaseError({ log: 'Erro na consulta por ID, ', data: error});
     }
   }
 
@@ -52,6 +52,43 @@ class UserRepository {
 
     await db.query<{ uuid: string }>(script, queryParams);
   }
+
+  async findByUuid(uuid: string): Promise<User | null> {
+    try {
+        const query = `
+            SELECT 
+                uuid, 
+                username
+            FROM application_user
+            WHERE uuid = $1
+        `;
+        const queryResult = await db.query<User>(query, [uuid]);
+        const [row] = queryResult.rows;
+        return !row ? null : row;
+    } catch (error) {
+        throw new DatabaseError({ log: 'Erro ao buscar usuário por uuid', data: error });
+    }
+}
+
+  async findByUsernameAndPassword(username: string, password: string): Promise<User | null> {
+    try {
+        const query = `
+            SELECT 
+                uuid, 
+                username
+            FROM application_user
+            WHERE username = $1
+            AND password = crypt($2, 'my_salt')
+        `;
+        const queryResult = await db.query(query, [username, password]);
+        const [row] = queryResult.rows;
+        return !row ? null : row;
+    } catch (error) {
+        throw new DatabaseError({ log: 'Erro ao buscar usuário por username e password', data: error });
+    }
+}
+
+  
 }
 
 export default new UserRepository();

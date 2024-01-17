@@ -1,9 +1,3 @@
-class DatabaseError extends Error {
+import { ApplicationError } from './application.error';
 
-    constructor(public message : string, public error : any){
-        super(message);
-    }
-
-}
-
-export default DatabaseError;
+export class DatabaseError extends ApplicationError<any> {}

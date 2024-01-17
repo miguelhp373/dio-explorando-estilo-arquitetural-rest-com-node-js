@@ -4,9 +4,13 @@ import userRepository from "../repositories/user.repository";
 const usersRoute = Router();
 
 usersRoute.get('/users',async (req : Request, res : Response, next : NextFunction)=>{
-    const users = await userRepository.findAllUsers();
+    try {
+        const users = await userRepository.findAllUsers();
 
     res.status(200).send(users);
+    } catch (error) {
+        next(error);
+    }
 });
 
 usersRoute.get('/users/:uuid', async (req : Request<{uuid : String}>, res : Response, next : NextFunction)=>{
